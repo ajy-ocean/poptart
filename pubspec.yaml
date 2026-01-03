@@ -1,0 +1,44 @@
+name: poptart
+description: Discover underrated music.
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.10.4 <4.0.0' 
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0
+  flutter_dotenv: ^5.1.0
+  logging: ^1.2.0
+  path_provider: ^2.1.2
+  url_launcher: ^6.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.11
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/.env
+    - assets/icon/ 
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#F2E9D4" 
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+
+flutter_native_splash:
+  color: "#F2E9D4"
+  image: "assets/icon/app_icon.png"
+  android_12:
+    image: "assets/icon/app_icon.png"
+    color: "#F2E9D4" 
+  fullscreen: true
