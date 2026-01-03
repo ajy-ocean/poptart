@@ -1,47 +1,52 @@
 name: Build & Release PopTart
 
 on:
-    push:
-        tags:
-            - "v*" 
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: write
 
 jobs:
-    release:
-        name: Build APK and Upload to Release
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
+  release:
+    name: Build APK and Upload to Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Setup Java
-              uses: actions/setup-java@v4
-              with:
-                  distribution: "zulu"
-                  java-version: "17"
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
 
-            - name: Setup Flutter
-              uses: subosito/flutter-action@v2
-              with:
-                  channel: "stable"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
 
-            - name: Install Dependencies
-              run: flutter pub get
+      - name: Install Dependencies
+        run: flutter pub get
 
-            - name: Create Env File
-              run: echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" > assets/.env
+      - name: Create Env File
+        run: echo "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}" > assets/.env
 
-            - name: Build APK
-              run: flutter build apk --release --split-per-abi
+      - name: Build APK
+        run: flutter build apk --release --split-per-abi
 
-            - name: Create GitHub Release
-              uses: softprops/action-gh-release@v2
-              with:
-                  files: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-                  tag_name: ${{ github.ref_name }}
-                  name: PopTart Release ${{ github.ref_name }}
-                  draft: false
-                  prerelease: false
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rename APK for Release
+        run: |
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk build/app/outputs/flutter-apk/PopTart-${{ github.ref_name }}.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/app/outputs/flutter-apk/PopTart-${{ github.ref_name }}.apk
+          tag_name: ${{ github.ref_name }}
+          name: PopTart Release ${{ github.ref_name }}
+          body: "Automated release for version ${{ github.ref_name }}. Download the APK below."
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
