@@ -2,9 +2,7 @@
   <table border="0" style="border: none; border-collapse: collapse;">
     <tr style="border: none;">
       <td style="border: none;">
-        <img src="assets/icon/app_icon.png" alt="PopTart Logo" width="250">
-      </td>
-      <td style="border: none; vertical-align: middle;">
+        <img src="assets/icon/app_icon.png" alt="PopTart Logo" width="250" style="border-radius: 20%;">
       </td>
     </tr>
   </table>
